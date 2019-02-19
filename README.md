@@ -1,5 +1,5 @@
 
-# Promise Double Factory #
+# Promise Puppeteer #
 
 ## Table Of Contents ##
 
@@ -11,9 +11,9 @@
 
 ## Introduction ##
 
-Promise Double Factory is a drop-in test solution for handling ES-Next and Promise/A+ promises in your code under test. The goal of Promise Double Factory is to make it as smooth and easy as possible to test code consuming promises without having to do a bunch of test gymnastics.
+Promise Puppeteer is a drop-in test solution for handling ES-Next and Promise/A+ promises in your code under test. The goal of Promise Puppeteer is to make it as smooth and easy as possible to test code consuming promises without having to do a bunch of test gymnastics.
 
-Why use Promise Double Factory:
+Why use Promise Puppeteer:
 
 - **Easy to use** -- API is exposed to developer to allow for full control over promise execution
 - **Predictable** -- Executes promise code as it behaves in the wild, making it easier to verify everything works as expected
@@ -36,18 +36,18 @@ Compatibility:
     - then supports both onSuccess and onFailure optionally
 
 
-Promise Double Factory works both in Node and client-side code, so it integrates seamlessly into all of your test scenarios. With its clear, simple API, it is easy to either execute through the entire code stack or perform step-by-step evaluation of promise resolution.
+Promise Puppeteer works both in Node and client-side code, so it integrates seamlessly into all of your test scenarios. With its clear, simple API, it is easy to either execute through the entire code stack or perform step-by-step evaluation of promise resolution.
     
 
 ## Setup ##
 
 Setup is as simple as performing an NPM installation and including the library in your test environment:
 
-`npm install promise-double-factory --save-dev`
+`npm install promise-puppeteer --save-dev`
 
 The library exists at the following path:
 
-`project-root/node_modules/promise-double-factory/index.js`
+`project-root/node_modules/promise-puppeteer/index.js`
 
 That's it!
     
@@ -61,7 +61,7 @@ A common test setup scenario would look like the following (using the Mocha test
 ```javascript
 const sinon = require('sinon');
 
-const promiseDoubleFactory = require('promise-double-factory');
+const promiseDoubleFactory = require('promise-puppeteer');
 const moduleUnderTestFactory = require('./moduleUnderTestFactory');
 
 describe('Module Under Test', function () {
@@ -92,7 +92,7 @@ describe('Module Under Test', function () {
 ```
 ### A running thenable fake ###
 
-An example of consuming a Promise Double Factory thenable straight from the actual test suite is as follows:
+An example of consuming a Promise Puppeteer thenable straight from the actual test suite is as follows:
 
 ```javascript
 const thenableFake = getThenableFake();
@@ -176,6 +176,12 @@ const thenableProxyFake = new PromiseFake(function(resolve, reject){
     // Resolving and rejecting DOES NOT initiate actual promise resolution
 });
 
+// Available methods on thenableProxyFake:
+thenableProxyFake.then();
+thenableProxyFake.catch();
+thenableProxyFake.finally();
+thenableProxyFake.disableThrowOnNoCatch();
+
 // Access to internal values:
 const resolveArguments = thenableProxyFake.resolve.args;
 const rejectArguments = thenableProxyFake.reject.args;
@@ -196,14 +202,24 @@ thenableFake
     .finally(onComplete1)
     .finally(onComplete2);
 
+// Turning off errors when catch is missing on a thenable fake
+thenableFake.disableThrowOnNoCatch();
+
 // Resolve and execute onSuccess and onComplete functions completely:
-thenableFake.resolve(arg1, arg2);
+thenableFake.resolve(arg1, arg2, ...);
 
 // Reject and execute onFailure and onComplete functions completely:
 thenableFake.reject(new Error('Something bad happened'));
+```
+
+#### Special Case and Analysis Step-wise Resolution ####
+
+```javascript
+// Verify resolveNext can be called safely:
+thenableFake.canResolve();
 
 // Resolve onSuccess functions incrementally, calling onComplete functions upon last onSuccess execution completion:
-const outcome = thenableFake.resolveNext(aValue); // Returns outcome from internal execution
+const outcome = thenableFake.resolveNext(arg1, arg2, ...); // Returns outcome from internal execution
 ```
     
 

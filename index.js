@@ -176,6 +176,7 @@
             this.then = (...args) => coreThenable.then.apply(coreThenable, args);
             this.catch = (...args) => coreThenable.catch.apply(coreThenable, args);
             this.finally = (...args) => coreThenable.finally.apply(coreThenable, args);
+            this.disableThrowOnNoCatch = () => coreThenable.disableThrowOnNoCatch.call(coreThenable);
         };
 
         PromiseFake.all = function () {

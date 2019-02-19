@@ -1,7 +1,7 @@
 {
-  "name": "promise-double-factory",
+  "name": "promise-puppeteer",
   "version": "1.0.0",
-  "description": "The drop-in test double for ES-Next and Promise/A+ promises",
+  "description": "Easy to use JS promise test double/fake/mock and execution analysis library",
   "main": "index.js",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha ./tests/**/*.test.js",

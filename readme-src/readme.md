@@ -1,6 +1,6 @@
 <!--bl
 (filemeta
-    (title "Promise Double Factory"))
+    (title "Promise Puppeteer"))
 
 (table-of-contents
     (section-main "./readme-src/content/introduction.md")

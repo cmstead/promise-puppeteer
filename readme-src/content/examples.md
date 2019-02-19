@@ -10,7 +10,7 @@ A common test setup scenario would look like the following (using the Mocha test
 ```javascript
 const sinon = require('sinon');
 
-const promiseDoubleFactory = require('promise-double-factory');
+const promiseDoubleFactory = require('promise-puppeteer');
 const moduleUnderTestFactory = require('./moduleUnderTestFactory');
 
 describe('Module Under Test', function () {
@@ -41,7 +41,7 @@ describe('Module Under Test', function () {
 ```
 ### A running thenable fake ###
 
-An example of consuming a Promise Double Factory thenable straight from the actual test suite is as follows:
+An example of consuming a Promise Puppeteer thenable straight from the actual test suite is as follows:
 
 ```javascript
 const thenableFake = getThenableFake();

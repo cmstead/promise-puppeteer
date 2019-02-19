@@ -21,6 +21,12 @@ const thenableProxyFake = new PromiseFake(function(resolve, reject){
     // Resolving and rejecting DOES NOT initiate actual promise resolution
 });
 
+// Available methods on thenableProxyFake:
+thenableProxyFake.then();
+thenableProxyFake.catch();
+thenableProxyFake.finally();
+thenableProxyFake.disableThrowOnNoCatch();
+
 // Access to internal values:
 const resolveArguments = thenableProxyFake.resolve.args;
 const rejectArguments = thenableProxyFake.reject.args;
@@ -41,12 +47,22 @@ thenableFake
     .finally(onComplete1)
     .finally(onComplete2);
 
+// Turning off errors when catch is missing on a thenable fake
+thenableFake.disableThrowOnNoCatch();
+
 // Resolve and execute onSuccess and onComplete functions completely:
-thenableFake.resolve(arg1, arg2);
+thenableFake.resolve(arg1, arg2, ...);
 
 // Reject and execute onFailure and onComplete functions completely:
 thenableFake.reject(new Error('Something bad happened'));
+```
+
+#### Special Case and Analysis Step-wise Resolution ####
+
+```javascript
+// Verify resolveNext can be called safely:
+thenableFake.canResolve();
 
 // Resolve onSuccess functions incrementally, calling onComplete functions upon last onSuccess execution completion:
-const outcome = thenableFake.resolveNext(aValue); // Returns outcome from internal execution
+const outcome = thenableFake.resolveNext(arg1, arg2, ...); // Returns outcome from internal execution
 ```
